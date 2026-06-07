@@ -1,5 +1,7 @@
 project_id = "cmtr-xpj56jfp"
 
+vpc_cidr = "10.10.0.0/16"
+
 public_subnets = [
   {
     name              = "cmtr-xpj56jfp-01-subnet-public-a"

@@ -5,22 +5,34 @@ output "vpc_id" {
 
 output "vpc_cidr" {
   value       = aws_vpc.main.cidr_block
-  description = "VPC CIDR block"
+  description = "VPC CIDR"
 }
 
 output "public_subnet_ids" {
-  value       = [for s in aws_subnet.public : s.id]
-  description = "IDs of public subnets"
+  value = [
+    aws_subnet.public_a.id,
+    aws_subnet.public_b.id,
+    aws_subnet.public_c.id
+  ]
+  description = "Public subnet IDs"
 }
 
 output "public_subnet_cidr_block" {
-  value       = [for s in aws_subnet.public : s.cidr_block]
-  description = "CIDR blocks of public subnets"
+  value = [
+    aws_subnet.public_a.cidr_block,
+    aws_subnet.public_b.cidr_block,
+    aws_subnet.public_c.cidr_block
+  ]
+  description = "Public subnet CIDR blocks"
 }
 
 output "public_subnet_availability_zone" {
-  value       = [for s in aws_subnet.public : s.availability_zone]
-  description = "AZs of public subnets"
+  value = [
+    aws_subnet.public_a.availability_zone,
+    aws_subnet.public_b.availability_zone,
+    aws_subnet.public_c.availability_zone
+  ]
+  description = "Public subnet AZs"
 }
 
 output "internet_gateway_id" {

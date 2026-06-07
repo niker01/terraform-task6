@@ -7,17 +7,41 @@ resource "aws_vpc" "main" {
   }
 }
 
-resource "aws_subnet" "public" {
-  for_each = { for s in var.public_subnets : s.name => s }
-
+resource "aws_subnet" "public_a" {
   vpc_id            = aws_vpc.main.id
-  cidr_block        = each.value.cidr_block
-  availability_zone = each.value.availability_zone
+  cidr_block        = "10.10.1.0/24"
+  availability_zone = "eu-west-1a"
 
   map_public_ip_on_launch = true
 
   tags = {
-    Name    = each.value.name
+    Name    = "cmtr-${var.project_id}-01-subnet-public-a"
+    Project = var.project_id
+  }
+}
+
+resource "aws_subnet" "public_b" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.10.3.0/24"
+  availability_zone = "eu-west-1b"
+
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name    = "cmtr-${var.project_id}-01-subnet-public-b"
+    Project = var.project_id
+  }
+}
+
+resource "aws_subnet" "public_c" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.10.5.0/24"
+  availability_zone = "eu-west-1c"
+
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name    = "cmtr-${var.project_id}-01-subnet-public-c"
     Project = var.project_id
   }
 }
@@ -45,9 +69,17 @@ resource "aws_route_table" "rt" {
   }
 }
 
-resource "aws_route_table_association" "public" {
-  for_each = aws_subnet.public
+resource "aws_route_table_association" "a" {
+  subnet_id      = aws_subnet.public_a.id
+  route_table_id = aws_route_table.rt.id
+}
 
-  subnet_id      = each.value.id
+resource "aws_route_table_association" "b" {
+  subnet_id      = aws_subnet.public_b.id
+  route_table_id = aws_route_table.rt.id
+}
+
+resource "aws_route_table_association" "c" {
+  subnet_id      = aws_subnet.public_c.id
   route_table_id = aws_route_table.rt.id
 }
