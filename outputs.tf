@@ -1,46 +1,34 @@
 output "vpc_id" {
+  description = "ID of the VPC"
   value       = aws_vpc.main.id
-  description = "VPC ID"
 }
 
 output "vpc_cidr" {
+  description = "CIDR block of the VPC"
   value       = aws_vpc.main.cidr_block
-  description = "VPC CIDR"
 }
 
 output "public_subnet_ids" {
-  value = [
-    aws_subnet.public_a.id,
-    aws_subnet.public_b.id,
-    aws_subnet.public_c.id
-  ]
-  description = "Public subnet IDs"
+  description = "IDs of all public subnets"
+  value       = [for subnet in aws_subnet.public : subnet.id]
 }
 
 output "public_subnet_cidr_block" {
-  value = [
-    aws_subnet.public_a.cidr_block,
-    aws_subnet.public_b.cidr_block,
-    aws_subnet.public_c.cidr_block
-  ]
-  description = "Public subnet CIDR blocks"
+  description = "CIDR blocks of all public subnets"
+  value       = [for subnet in aws_subnet.public : subnet.cidr_block]
 }
 
 output "public_subnet_availability_zone" {
-  value = [
-    aws_subnet.public_a.availability_zone,
-    aws_subnet.public_b.availability_zone,
-    aws_subnet.public_c.availability_zone
-  ]
-  description = "Public subnet AZs"
+  description = "Availability zones of all public subnets"
+  value       = [for subnet in aws_subnet.public : subnet.availability_zone]
 }
 
 output "internet_gateway_id" {
-  value       = aws_internet_gateway.igw.id
-  description = "Internet Gateway ID"
+  description = "ID of the Internet Gateway"
+  value       = aws_internet_gateway.main.id
 }
 
 output "routing_table_id" {
-  value       = aws_route_table.rt.id
-  description = "Route Table ID"
+  description = "ID of the route table"
+  value       = aws_route_table.public.id
 }
